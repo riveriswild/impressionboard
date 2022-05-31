@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-6k$i52&nmx5u_i!$83nl39p59xejjbwlao+cnq$wh0ani!q!!v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.mydomain.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.mydomain.com', 'localhost']
 
 LOGIN_URL = "/login"   # change from default "accounts/login"
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # third-party apps
     'rest_framework',
+    'corsheaders',
 
     # internal apps
     'tweets',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,12 +133,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/'                  # INFO STATIC
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ORIGIN_ALLOW_ALL = True    # any website has access to my api
+CORS_URLS_REGEX = r"^/api/.*$"
 
 DEFAULT_RENDERER_CLASSES = [
     'rest_framework.renderers.JSONRenderer',
