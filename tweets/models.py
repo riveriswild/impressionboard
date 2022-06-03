@@ -13,7 +13,7 @@ class TweetLike(models.Model):
 
 class Tweet(models.Model):
     # id - adds automatically when we save an instance
-    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)   # retweeting func
+    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)   # retweeting functionality
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='tweet_user', blank=True, through=TweetLike)
     content = models.TextField(blank=True, null=True)
@@ -28,8 +28,7 @@ class Tweet(models.Model):
 
     @property
     def is_retweet(self):
-        return self.parent != None
-
+        return self.parent is not None
 
     # def serialize(self):
     #     return {
