@@ -32,7 +32,7 @@ class TweetCreateSerializer(serializers.ModelSerializer):
 
     def get_content(self, obj):
         content = obj.content
-        print(content)
+        # print(content)
         if obj.is_retweet:
             content = obj.parent.content
         return content
@@ -43,10 +43,9 @@ class TweetCreateSerializer(serializers.ModelSerializer):
         return value
 
 
-
 class TweetSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
-    parent = TweetCreateSerializer(read_only=True)
+    parent = TweetCreateSerializer(read_only=True)    # TODO WHAT?
 
     class Meta:
         model = Tweet

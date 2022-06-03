@@ -83,6 +83,9 @@ class TweetTestCase(TestCase):
         self.assertEqual(like_count, 0)
 
     def test_action_retweet(self):
+        """
+        Tests retweeting;
+        """
         # client = self.get_client()
         self.client.force_authenticate(self.user)
         current_count = self.currentCount
@@ -96,6 +99,10 @@ class TweetTestCase(TestCase):
         self.assertEqual(current_count + 1, new_tweet_id)
 
     def test_tweet_create_api_view(self):
+        """
+        Tests tweet creation API
+        Checks if response is 201; tests if tests if id of the created tweet is +1 the last count
+        """
         self.client.force_authenticate(self.user)
         request_data = {"content": "This is my test tweet"}
         #client = self.get_client()
@@ -106,8 +113,10 @@ class TweetTestCase(TestCase):
         new_tweet_id = response_data.get("id")
         self.assertEqual(self.currentCount + 1, new_tweet_id)
 
-
     def test_tweet_detail_api_view(self):
+        """
+        Checks if we get the right tweet id when getting tweet
+        """
         client = self.get_client()
         response = client.get("/api/tweets/2/")
         # print("DETAIL response", response)
@@ -117,6 +126,12 @@ class TweetTestCase(TestCase):
         self.assertEqual(_id, 2)
 
     def test_tweet_delete_api_view(self):
+        """
+        Tests deleting tweets
+        tests if user can delete their tweet
+        tests if deleted tweet is deleted (404 when trying to delete already deleted tweet)
+        tests if user can't delete sb else's tweet
+        """
         self.client.force_authenticate(self.user)
         response = self.client.delete("/api/tweets/1/delete/")
         self.assertEqual(response.status_code, 200)

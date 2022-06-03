@@ -27,7 +27,7 @@ def home_view(request, *args, **kwargs):
 
 
 @api_view(['POST'])  # http method == post
-# @authentication_classes([SessionAuthentication])
+# @authentication_classes([SessionAuthentication])   # TODO do I even need this?
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     serializer = TweetCreateSerializer(data=request.data)
@@ -40,7 +40,10 @@ def tweet_create_view(request, *args, **kwargs):
 
 @api_view(['GET'])
 def tweet_detail_view(request, tweet_id, *args, **kwargs):
-    qs = Tweet.objects.filter(id=tweet_id)
+    """
+    Shows tweet details
+    """
+    qs = Tweet.objects.filter(id=tweet_id)   # TODO check if works with get
     if not qs.exists():
         return Response({}, status=404)
     obj = qs.first()
@@ -51,10 +54,13 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
 @api_view(['DELETE', 'POST'])
 @permission_classes([IsAuthenticated])
 def tweet_delete_view(request, tweet_id, *args, **kwargs):
+    """
+    Checks if user is author of the tweet, if so, deletes tweet
+    """
     qs = Tweet.objects.filter(id=tweet_id)
     if not qs.exists():
         return Response({}, status=404)
-    qs = qs.filter(user=request.user)
+    qs = qs.filter(user=request.user)   # check if user is author
     if not qs.exists():
         return Response({"message": "You cannot delete this tweet"}, status=401)
     obj = qs.first()
@@ -69,7 +75,7 @@ def tweet_action_view(request, *args, **kwargs):
     id is required
     Action options: like, unlike, retweet
     """
-    print(request.data)
+    # print(request.data)
     serializer = TweetActionSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data
@@ -97,6 +103,9 @@ def tweet_action_view(request, *args, **kwargs):
 
 @api_view(['GET'])
 def tweet_list_view(request, *args, **kwargs):
+    """
+    Shows list view of all tweets
+    """
     qs = Tweet.objects.all()
     serializer = TweetSerializer(qs, many=True)
     # print(serializer.data)
