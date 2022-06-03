@@ -22,7 +22,7 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS  # info for safe urls
 
 
 def home_view(request, *args, **kwargs):
-    print(request.user or None)
+    #print(request.user or None)
     return render(request, "pages/home.html", context={}, status=200)
 
 
