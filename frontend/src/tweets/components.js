@@ -23,7 +23,7 @@ export function TweetsComponent(props) {
     <textarea ref={textAreaRef} required={true} className='form-control'>
 
       </textarea>
-      <button type='submit' className='btn btn-primary my-3'>Tweet now</button>
+      <button type='submit now' className='btn btn-primary my-3'>Tweet now</button>
     </form>
     </div>
 
@@ -46,10 +46,11 @@ export function TweetsComponent(props) {
     useEffect(() => {
       // do lookup
       const myCallback =(response, status) => {
+        alert('hey')
         if (status === 200) {
          setTweetsInit(response)
-         console.log(response)
-         console.log(tweetsInit)
+        //  console.log(response)
+        //  console.log(tweetsInit)
         } else {
           alert("There was an error")
         }
